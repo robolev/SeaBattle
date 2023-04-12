@@ -53,7 +53,6 @@ namespace SeaBattle
                 ConsoleColor color = consoleColor;
                 if (consoleColor >= ConsoleColor.DarkGray)
                 {
-                    // Map bright colors to their dim equivalents
                     color -= 8;
                 }
 
