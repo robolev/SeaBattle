@@ -1,6 +1,7 @@
 ﻿using System;
 using Figgle;
 using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
 
 
 namespace SeaBattle
@@ -9,10 +10,18 @@ namespace SeaBattle
     {
         public Menu() 
         {
-            string imagePath = "SeaBattle\\SeaBattle\\Images";
+           
+        }
+        public void DrawMenu()
+        {
+            string imagePath = "C:\\Users\\Robert\\source\\repos\\SeaBattle\\SeaBattle\\Images\\0d3f1700-f2cb-11e6-8e13-ac162d8bc1e4_1200x.jpg";
             using (Image<Rgba32> image = Image.Load<Rgba32>(imagePath))
             {
-                Console.SetWindowSize(image.Width, image.Height);
+                int consoleWidth = Console.WindowWidth;
+                int consoleHeight = Console.WindowHeight;
+
+                // resize the image to fit the console window size
+                image.Mutate(x => x.Resize(consoleWidth, consoleHeight));
 
                 for (int y = 0; y < image.Height; y++)
                 {
@@ -27,13 +36,11 @@ namespace SeaBattle
                     Console.WriteLine();
                 }
             }
-            DrawMenu();
-        }
-        public void DrawMenu()
-        {
+            Console.ForegroundColor= ConsoleColor.Blue;
             Console.WriteLine(FiggleFonts.Standard.Render("SeaBattle"));
             Console.WriteLine("Press any key to start");
             Console.ReadKey();
+            CleanConsole();
         }
         static ConsoleColor GetClosestConsoleColor(byte r, byte g, byte b)
         {
@@ -110,6 +117,21 @@ namespace SeaBattle
                 default:
                     throw new ArgumentException($"Unknown ConsoleColor value: {color}", nameof(color));
             }
+        }
+        public void CleanConsole()
+        {
+            int left = Console.CursorLeft;
+            int top = Console.CursorTop;
+
+            for (int y = 0; y < Console.WindowHeight; y++)
+            {
+                Console.SetCursorPosition(left, y);
+                for (int x = 0; x < Console.WindowWidth; x++)
+                {
+                    Console.Write(" ");
+                }
+            }
+            Console.SetCursorPosition(left, top);
         }
     }
 }
