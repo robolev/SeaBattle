@@ -12,11 +12,9 @@ namespace SeaBattle
         public void Seafield()
         {
             int gridSize = 10;
-            char[,] field = WarshipPlacement(gridSize);
 
             Console.Clear();
             DrawColumnLetters(gridSize);
-            DrawGridRowsAsync(gridSize,field);
 
             Console.Clear();
             DrawColumnLetters(gridSize);
@@ -24,6 +22,13 @@ namespace SeaBattle
             Console.ReadLine();
         }
 
+        public async Task SeafieldAsync()
+        {
+            int gridSize = 10;
+            char[,] field = WarshipPlacement(gridSize);
+
+            await DrawGridRowsAsync(gridSize, field);           
+        }
         static char[,] WarshipPlacement(int gridSize)
         {
             char[,] field = new char[gridSize, gridSize];
@@ -106,12 +111,12 @@ namespace SeaBattle
                             else if (wavePattern == 1)
                             {
                                 Console.ForegroundColor = ConsoleColor.DarkCyan;
-                                Console.Write("~~~ ");
+                                Console.Write("~~  ");
                             }
                             else
                             {
                                 Console.ForegroundColor = ConsoleColor.Cyan;
-                                Console.Write("~   ");
+                                Console.Write("~~~ ");
                             }
                         }
                         Console.ResetColor();

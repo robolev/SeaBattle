@@ -14,7 +14,8 @@ namespace SeaBattle
         }
         public void DrawMenu()
         {
-            string imagePath = "C:\\Users\\Robert\\source\\repos\\SeaBattle\\SeaBattle\\Images\\0d3f1700-f2cb-11e6-8e13-ac162d8bc1e4_1200x.jpg";
+            var initPath = Directory.GetCurrentDirectory();
+            string imagePath = initPath + "\\Resources\\CatImage.jpg";
             using (Image<Rgba32> image = Image.Load<Rgba32>(imagePath))
             {
                 int consoleWidth = Console.WindowWidth;
