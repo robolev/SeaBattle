@@ -26,7 +26,7 @@ namespace SeaBattle
             Console.ReadLine();
             field = WarshipPlacement(gridSize,field);
             field2 = WarshipPlacement(gridSize,field2);
-            PlayGame();
+           // PlayGame();
         }
 
         public async Task SeafieldAsync()

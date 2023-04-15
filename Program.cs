@@ -9,6 +9,7 @@
            menu.DrawMenu();
            Game game= new Game();
            game.Seafield();
+           game.PlayGame();
            await game.SeafieldAsync();
           // game.PlayGame();
         }
