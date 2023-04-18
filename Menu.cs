@@ -8,10 +8,6 @@ namespace SeaBattle
 {
     public class Menu
     {
-        public Menu() 
-        {
-           
-        }
         public void DrawMenu()
         {
             ImageRender imageRender = new ImageRender();

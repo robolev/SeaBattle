@@ -10,10 +10,6 @@ namespace SeaBattle
     internal class ImageRender
     {
         static string InitPath = Directory.GetCurrentDirectory() + "\\Resources\\";
-        public ImageRender() 
-        {
-         
-        }
         public void Render(string ImageName) 
         {            
             string imagePath = InitPath + ImageName;
