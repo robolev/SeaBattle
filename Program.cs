@@ -1,7 +1,7 @@
 ﻿namespace SeaBattle
 {
     internal class 
-        Program
+    Program
     {
         static async Task Main(string[] args)
         {

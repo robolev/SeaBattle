@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 using System.Xml;
 
@@ -10,6 +11,8 @@ namespace SeaBattle
         static int gridSize = 10;
         static char[,] field = new char[gridSize, gridSize];
         static char[,] field2 = new char[gridSize, gridSize];
+        public Player player1;
+        public Player player2;
 
         enum KeyCodes
         {
@@ -73,6 +76,7 @@ namespace SeaBattle
             int offset = (gridSize -4) / 2;
             for (int i = 0; i < gridSize; i++)
             {
+                Console.ForegroundColor= ConsoleColor.Cyan;
                 Console.SetCursorPosition(offset + i * 4, 0);
                 Console.Write((char)('A' + i));
                 Console.Write(" ");
@@ -98,6 +102,7 @@ namespace SeaBattle
 
                         if (currentHits[x, y])
                         {
+                            Console.ForegroundColor = ConsoleColor.Blue;
                             Console.Write("x   ");
                         }
                         else if (field[x, y] == 'O')
@@ -119,6 +124,7 @@ namespace SeaBattle
         }
         static void Input()
         {
+         
             ConsoleKeyInfo keyInfo = Console.ReadKey();
             switch (keyInfo.Key)
             {
@@ -160,40 +166,64 @@ namespace SeaBattle
         }
         public void PlayGame()
         {
-           int gridSize = field.GetLength(0);
-           bool[,] player1Hits = new bool[gridSize, gridSize];
-           bool[,] player2Hits = new bool[gridSize, gridSize];
-           bool player1Turn = true;
+            int gridSize = field.GetLength(0);
+            bool[,] player1Hits = new bool[gridSize, gridSize];
+            bool[,] player2Hits = new bool[gridSize, gridSize];
+            bool player1Turn = true;
+                              
+            Console.WriteLine("Player 1:");
+            player1 = new Player();
 
-           int cursorX = 0;
-           int cursorY = 0;
-           Console.CursorVisible = false;
+            Console.WriteLine("Player 2:");
+            player2 = new Player();
 
-           while (true)
-           {
-              Console.Clear();
-              DrawColumnLetters(gridSize);
+            int cursorX = 0;
+            int cursorY = 0;
+            Console.CursorVisible = false;
+            while (true)
+            {
+                Console.Clear();
+                DrawColumnLetters(gridSize);
  
-              char[,] currentField = player1Turn ? field2 : field;
-              bool[,] currentHits = player1Turn ? player1Hits : player2Hits;
+                char[,] currentField = player1Turn ? field2 : field;
+                bool[,] currentHits = player1Turn ? player1Hits : player2Hits;
 
-              DrawGridRows(gridSize, currentField,currentHits,cursorX,cursorY);
+                DrawGridRows(gridSize, currentField,currentHits,cursorX,cursorY);
 
-              Console.SetCursorPosition(cursorX * 4 + 3, cursorY + 1);
-              Console.CursorVisible = true;
+                Console.SetCursorPosition(cursorX * 4 + 3, cursorY + 1);
+                Console.CursorVisible = true;
 
-              Input(); 
-             
-              Console.CursorVisible = false;
+                Input();
 
-              if(keyCodes == KeyCodes.Enter)
-              {
-                 HandleCellSelection(currentHits, currentField, cursorX, cursorY, ref player1Turn);
-              }
-
-              HandleInput(ref cursorX,ref cursorY);
-              HandleBarrierChecking(ref cursorX, ref cursorY, gridSize);
-           }
+                Console.CursorVisible = false;
+                
+                HandlePlayerTurn(ref cursorX, ref cursorY, gridSize, currentHits, currentField,ref player1Turn);
+                HandleInput(ref cursorX, ref cursorY);
+                CheckKeyPress(ref player1Turn, currentHits, currentField, cursorX, cursorY);
+                HandleBarrierChecking(ref cursorX, ref cursorY, gridSize);
+            }
+        }
+        private void HandlePlayerTurn(ref int cursorX, ref int cursorY, int gridSize, bool[,] currentHits, char[,] currentField, ref bool player1Turn)
+        {
+            if (player1.IsMachine && player1Turn || player2.IsMachine && !player1Turn)
+            {
+                GenerateRandomCursor(ref cursorX, ref cursorY, gridSize);
+                HandleCellSelection(currentHits, currentField, cursorX, cursorY, ref player1Turn);
+            }            
+        }
+        private void CheckKeyPress(ref bool player1Turn, bool[,] currentHits, char[,] currentField, int cursorX, int cursorY)
+        {   
+            ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+            if (keyInfo.Key == ConsoleKey.Enter)
+            {
+               HandleCellSelection(currentHits, currentField, cursorX, cursorY, ref player1Turn);
+            }          
+        }
+        public void GenerateRandomCursor(ref int cursorX, ref int cursorY, int gridSize)
+        {
+            Random random = new Random();
+            cursorX = random.Next(0, gridSize);
+            cursorY = random.Next(0, gridSize);
         }
         private void HandleCellSelection(bool[,] currentHits, char[,] currentField, int cursorX, int cursorY, ref bool player1Turn)
         {
