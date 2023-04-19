@@ -26,8 +26,6 @@ namespace SeaBattle
         public void Seafield()
         {
             Console.Clear();
-            DrawColumnLetters(gridSize);
-            Console.ReadLine();
             field = WarshipPlacement(gridSize,field);
             field2 = WarshipPlacement(gridSize,field2);
         }
@@ -114,7 +112,6 @@ namespace SeaBattle
                         {
                             DrawingWavesPattern();
                         }
-
                         Console.ResetColor();
                     }
                     Console.WriteLine();
