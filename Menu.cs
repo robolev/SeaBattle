@@ -11,7 +11,7 @@ namespace SeaBattle
         public void DrawMenu()
         {
             ImageRender imageRender = new ImageRender();
-            imageRender.Render("CatImage.jpg");
+           // imageRender.Render("CatImage.jpg");
             Console.ForegroundColor= ConsoleColor.Blue;
             Console.WriteLine(FiggleFonts.Standard.Render("SeaBattle"));
             Console.WriteLine("Press any key to start");

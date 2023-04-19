@@ -198,9 +198,7 @@ namespace SeaBattle
                 Console.CursorVisible = false;
                 
                 HandlePlayerTurn(ref cursorX, ref cursorY, gridSize, currentHits, currentField,ref player1Turn);
-                HandleInput(ref cursorX, ref cursorY);
-                CheckKeyPress(ref player1Turn, currentHits, currentField, cursorX, cursorY);
-                HandleBarrierChecking(ref cursorX, ref cursorY, gridSize);
+              
             }
         }
         private void HandlePlayerTurn(ref int cursorX, ref int cursorY, int gridSize, bool[,] currentHits, char[,] currentField, ref bool player1Turn)
@@ -209,7 +207,13 @@ namespace SeaBattle
             {
                 GenerateRandomCursor(ref cursorX, ref cursorY, gridSize);
                 HandleCellSelection(currentHits, currentField, cursorX, cursorY, ref player1Turn);
-            }            
+            }
+            else
+            {
+                HandleInput(ref cursorX, ref cursorY);
+                CheckKeyPress(ref player1Turn, currentHits, currentField, cursorX, cursorY);
+                HandleBarrierChecking(ref cursorX, ref cursorY, gridSize);
+            }
         }
         private void CheckKeyPress(ref bool player1Turn, bool[,] currentHits, char[,] currentField, int cursorX, int cursorY)
         {   
