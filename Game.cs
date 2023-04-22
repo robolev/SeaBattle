@@ -13,7 +13,7 @@ namespace SeaBattle
         private CellState[,] field = new CellState[gridSize, gridSize];
         private CellState[,] field2 = new CellState[gridSize, gridSize];
         public PlayerTypeSlection? player1;
-        public PlayerTypeSlection player2;
+        public PlayerTypeSlection? player2;
         static int cursorX = 0;
         static int cursorY = 0;
         private CellState[,]? currentField;
