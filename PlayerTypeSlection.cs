@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace SeaBattle
 {
-    public class Player
+    public class PlayerTypeSlection
     {
         public bool IsMachine { get; set; }
         public bool[,] Hits { get; set; }
 
-        public Player()
+        public PlayerTypeSlection()
         {
             ChoosePlayerType();
         }
