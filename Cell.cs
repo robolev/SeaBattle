@@ -7,9 +7,6 @@ namespace SeaBattle
         Empty,
         Ship,
         Hit,
-        Wave,
-        Doublewave,
-        Triplewave,
     }
 
     public class Cell
