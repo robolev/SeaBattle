@@ -19,6 +19,7 @@ namespace SeaBattle
         private CellState[,]? currentField;
         public bool[,]? currentHits;
         static bool player1Turn;
+        static bool end = false;
         enum KeyCodes
         {
             Up,
@@ -181,7 +182,7 @@ namespace SeaBattle
 
 
             Console.CursorVisible = false;
-            while (true)
+            while (!end)
             {
                 Console.Clear();
                 DrawColumnLetters();
@@ -294,7 +295,8 @@ namespace SeaBattle
             if (AreAllWarshipsSunk())
             {
                 Console.WriteLine(player1Turn ? "Player 1 wins!" : "Player 2 wins!");
-                Environment.Exit(0);
+                Console.ReadKey();
+                end = true;               
             }
         }
     }   

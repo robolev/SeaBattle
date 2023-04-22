@@ -10,6 +10,9 @@
            Game game= new Game();
            game.Seafield();
            game.PlayGame();
+           Lobby loobby = new Lobby();
+           loobby.ChooseIfcontinue();
+           loobby.RepeatTheGame();
         }
     }
 }
