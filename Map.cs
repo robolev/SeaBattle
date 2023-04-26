@@ -24,9 +24,6 @@ namespace SeaBattle
             string symbol;
             string ship = "O  ";
             string hit = "x  ";
-            string wave = "~";
-            string doublewave = "~~";
-            string triplewave = "~~~";
 
             switch (cellState)
             {
