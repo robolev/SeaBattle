@@ -32,15 +32,8 @@ namespace SeaBattle
             Left,
             Right,
             Enter,
-            Default
+            Default,
         } 
-
-        public void Seafield()
-        {
-            Console.Clear();
-            field = Map.WarshipPlacement(field);
-            field2 = Map.WarshipPlacement(field2);
-        }
         static void DrawColumnLetters()
         {
             Console.Write("   ");
@@ -114,11 +107,17 @@ namespace SeaBattle
         }
         public void Init()
         {
-            end = false;
+            Console.Clear();
+
+            field = Map.WarshipPlacement(field);
+            field2 = Map.WarshipPlacement(field2);
+ 
             int gridSize = field.GetLength(0);
+
             bool[,] player1Hits = new bool[gridSize, gridSize];
             bool[,] player2Hits = new bool[gridSize, gridSize];
             player1Turn = true;
+            end = false;
 
             Console.WriteLine("Player 1:");
             player1 = new PlayerTypeSlection();
@@ -152,9 +151,8 @@ namespace SeaBattle
             CellState[,] field = cell.GetCurrentfield();
            
             if (currentHits[cursorX, cursorY])
-            {
-                Console.WriteLine("You have already fired on this cell.");
-            }           
+               Console.WriteLine("You have already fired on this cell.");
+                       
             else if (field[cursorX, cursorY] == CellState.Ship)
             {
                currentHits[cursorX, cursorY] = true;
@@ -201,7 +199,6 @@ namespace SeaBattle
         }
         private bool AreAllWarshipsSunk()
         {
-
             CellState[,] field = cell.GetCurrentfield();
             for (int y = 0; y < field.GetLength(0); y++)
             {
@@ -222,7 +219,6 @@ namespace SeaBattle
             {
                 player1Win = player1Turn ? true : false;
                 Console.WriteLine(player1Turn ? "Player 1 wins!" : "Player 2 wins!");
-                Console.ReadKey();
                 end = true;                
             }
             return player1Win;            

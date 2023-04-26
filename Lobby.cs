@@ -6,8 +6,9 @@ namespace SeaBattle
     {
 
         Game game = new Game();
-        static int player1WinCount;
-        static int player2WinCount;
+
+        int player1WinCount;
+        int player2WinCount;
         public void ChooseIfcontinue()
         {
             while (true)
@@ -27,7 +28,6 @@ namespace SeaBattle
         public void CreateNewGame()
         {
             game = new Game();
-            game.Seafield();
             game.PlayGame();
         }
         public (int,int) PLayersWinStatistics(bool player1Win)
