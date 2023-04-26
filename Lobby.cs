@@ -1,45 +1,51 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.PortableExecutable;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SeaBattle
 {
     public class Lobby
     {
-        bool retry = false;
+
+        Game game = new Game();
+        static int player1WinCount;
+        static int player2WinCount;
         public void ChooseIfcontinue()
         {
-            Console.WriteLine("Do you want to play again");
-            Console.WriteLine("1. Yes");
-            Console.WriteLine("2. No");
-            Console.Write("Enter choice (1/2): ");
-            string choice = Console.ReadLine();
-            if (choice == "2")
+            while (true)
             {
-                retry = false;
-            }
-            else
-            {
-                retry = true;  
+                DrawStatistics();
+                Console.WriteLine("Do you want to play again");
+                Console.WriteLine("1. Yes");
+                Console.WriteLine("2. No");
+                Console.Write("Enter choice (1/2): ");
+                string choice = Console.ReadLine();
+                if (choice == "1")
+                    CreateNewGame();
+                else
+                    Environment.Exit(0);
             }
         }
-        public void RepeatTheGame() 
+        public void CreateNewGame()
         {
-            if(retry) 
-            {
-                Game game = new Game();
-                game.Seafield();
-                game.PlayGame();
-
-            }            
+            game = new Game();
+            game.Seafield();
+            game.PlayGame();
+        }
+        public (int,int) PLayersWinStatistics(bool player1Win)
+        {
+            if (player1Win)
+                player1WinCount++;
             else
-            {
-                Environment.Exit(0);
-            }
-        
+                player2WinCount++;
+            return(player1WinCount,player2WinCount);
+        }
+        public void DrawStatistics()
+        {
+            bool winner = game.CheckingWin();
+            (player1WinCount, player2WinCount) = PLayersWinStatistics(winner);
+            Console.WriteLine("Player 1 win statistic");
+            Console.WriteLine(player1WinCount + "   ");
+            Console.WriteLine("Player 2 win statistic");
+            Console.WriteLine(player2WinCount + "   ");
         }
     }
 }

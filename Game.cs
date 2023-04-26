@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Reflection.Metadata.Ecma335;
-using System.Reflection.PortableExecutable;
-using System.Threading.Tasks;
-using System.Xml;
 
 namespace SeaBattle
 {
     public class Game
-    {
-        static Random rand = new Random();
+    {      
         static int gridSize = 10;
         private CellState[,] field = new CellState[gridSize, gridSize];
         private CellState[,] field2 = new CellState[gridSize, gridSize];
@@ -16,10 +11,11 @@ namespace SeaBattle
         public PlayerTypeSlection? player2;
         static int cursorX = 0;
         static int cursorY = 0;
-        private CellState[,]? currentField;
         public bool[,]? currentHits;
         static bool player1Turn;
         static bool end = false;
+        Map cell = new Map();
+        
         enum KeyCodes
         {
             Up,
@@ -34,46 +30,8 @@ namespace SeaBattle
         public void Seafield()
         {
             Console.Clear();
-            field = WarshipPlacement(field);
-            field2 = WarshipPlacement(field2);
-        }
-        static CellState[,] WarshipPlacement(CellState[,] field)
-        {
-            int[] shipSizes = { 2, 3, 3, 4, 5 };
-            int shipCount = shipSizes.Length;
-            Random rand = new Random();
-
-            while (shipCount > 0)
-            {
-                int orientation = rand.Next(2); // 0 = horizontal, 1 = vertical
-                int startX = rand.Next(0, field.GetLength(0) - shipSizes[shipCount - 1]);
-                int startY = rand.Next(0, field.GetLength(1) - shipSizes[shipCount - 1]);
-
-                bool isValidPlacement = true;
-                for (int i = 0; i < shipSizes[shipCount - 1]; i++)
-                {
-                    int x = startX + (orientation == 0 ? i : 0);
-                    int y = startY + (orientation == 1 ? i : 0);
-
-                    if (field[x, y] != CellState.Empty)
-                    {
-                        isValidPlacement = false;
-                        break;
-                    }
-                }
-
-                if (isValidPlacement)
-                {
-                    for (int i = 0; i < shipSizes[shipCount - 1]; i++)
-                    {
-                        int x = startX + (orientation == 0 ? i : 0);
-                        int y = startY + (orientation == 1 ? i : 0);
-                        field[x, y] = CellState.Ship;
-                    }
-                    shipCount--;
-                }
-            }
-            return field;
+            field = Map.WarshipPlacement(field);
+            field2 = Map.WarshipPlacement(field2);
         }
         static void DrawColumnLetters()
         {
@@ -87,36 +45,6 @@ namespace SeaBattle
                 Console.Write(" ");
             }
             Console.WriteLine();
-        }
-        public void DrawGridRows()
-        {
-            while (!Console.KeyAvailable)
-            {
-                Console.SetCursorPosition(0, 1);
-                for (int y = 0; y < gridSize; y++)
-                {
-                    Console.Write((y + 1).ToString().PadLeft(2));
-                    Console.Write(" ");
-                    for (int x = 0; x < gridSize; x++)
-                    {
-                        if (x == cursorX && y == cursorY)
-                        {
-                            Console.BackgroundColor = ConsoleColor.White;
-                            Console.ForegroundColor = ConsoleColor.Blue;
-                        }
-                        if (currentField[x, y] == CellState.Empty)
-                            DrawingWavesPattern();
-
-                        Cell cell = new Cell(currentField);
-
-                        string cellChar = cell.GetSymbol(x, y);
-                        Console.Write(cellChar + " ");
-                        Console.ResetColor();
-                    }
-                    Console.WriteLine();
-                    Thread.Sleep(10);
-                }
-            }
         }
         static void Input()
         {
@@ -143,32 +71,10 @@ namespace SeaBattle
                     break;
             }
             lastKeyCode = keyCodes;
-        }
-        private async Task DrawingWavesPattern()
-        {
-            int wavePattern = rand.Next(3);
-            string wave = "~";
-            string Doublewave = "~~";
-            string Triplewave = "~~~";
-
-            if (wavePattern == 0)
-            {
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.Write(wave + "  ");
-            }
-            else if (wavePattern == 1)
-            {
-                Console.ForegroundColor = ConsoleColor.DarkCyan;
-                Console.Write(Doublewave +" ");
-            }
-            else
-            {
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.Write(Triplewave);
-            }
-        }
+        }     
         public void PlayGame()
         {
+            end = false;
             int gridSize = field.GetLength(0);
             bool[,] player1Hits = new bool[gridSize, gridSize];
             bool[,] player2Hits = new bool[gridSize, gridSize];
@@ -176,10 +82,10 @@ namespace SeaBattle
 
             Console.WriteLine("Player 1:");
             player1 = new PlayerTypeSlection();
-
+           
             Console.WriteLine("Player 2:");
             player2 = new PlayerTypeSlection();
-
+           
 
             Console.CursorVisible = false;
             while (!end)
@@ -187,10 +93,12 @@ namespace SeaBattle
                 Console.Clear();
                 DrawColumnLetters();
 
-                currentField = player1Turn ? field2 : field;
+                CellState[,] currentField = player1Turn ? field2 : field;
+
+                cell.SetCurrentField(currentField);
                 currentHits = player1Turn ? player1Hits : player2Hits;
 
-                DrawGridRows();
+                cell.DrawGridRows(cursorX,cursorY,gridSize);
 
                 Console.SetCursorPosition(cursorX * 4 + 3, cursorY + 1);
                 Console.CursorVisible = true;
@@ -229,20 +137,23 @@ namespace SeaBattle
         }
         private void HandleCellSelection()
         {
+            CellState[,] field = cell.GetCurrentfield();
+           
             if (currentHits[cursorX, cursorY])
             {
                 Console.WriteLine("You have already fired on this cell.");
-            }                         
-            else if(currentField[cursorX, cursorY] == CellState.Ship)
+            }           
+            else if (field[cursorX, cursorY] == CellState.Ship)
             {
                currentHits[cursorX, cursorY] = true;
                Console.WriteLine("You hit a warship!");
-               currentField[cursorX, cursorY] = CellState.Hit;
+               field[cursorX, cursorY] = CellState.Hit;
             }
             else
             {
                 Console.WriteLine("You missed.");
                 player1Turn = !player1Turn;
+                field[cursorX, cursorY] = CellState.Hit;
             }
             Console.ReadLine();
         }
@@ -278,11 +189,13 @@ namespace SeaBattle
         }
         private bool AreAllWarshipsSunk()
         {
-            for (int y = 0; y < currentField.GetLength(0); y++)
+
+            CellState[,] field = cell.GetCurrentfield();
+            for (int y = 0; y < field.GetLength(0); y++)
             {
-                for (int x = 0; x < currentField.GetLength(1); x++)
+                for (int x = 0; x < field.GetLength(1); x++)
                 {
-                    if (currentField[x, y] == CellState.Ship && !currentHits[x, y])
+                    if (field[x, y] == CellState.Ship && !currentHits[x, y])
                     {
                         return false;
                     }
@@ -290,14 +203,18 @@ namespace SeaBattle
             }
             return true;
         }
-        private void CheckingWin()
+        public bool  CheckingWin()
         {
+            bool player1Win = false;
             if (AreAllWarshipsSunk())
             {
+                player1Win = player1Turn ? true : false;
                 Console.WriteLine(player1Turn ? "Player 1 wins!" : "Player 2 wins!");
                 Console.ReadKey();
-                end = true;               
+                end = true;
+                
             }
+            return player1Win;            
         }
     }   
 }

@@ -7,12 +7,9 @@
         {
            Menu menu = new Menu();
            menu.DrawMenu();
-           Game game= new Game();
-           game.Seafield();
-           game.PlayGame();
            Lobby loobby = new Lobby();
+           loobby.CreateNewGame();
            loobby.ChooseIfcontinue();
-           loobby.RepeatTheGame();
         }
     }
 }
