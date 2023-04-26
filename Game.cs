@@ -22,7 +22,9 @@ namespace SeaBattle
         bool[,] player2Hits = new bool[gridSize, gridSize];
 
         Map cell = new Map();
-        
+
+        static KeyCodes keyCodes;
+        static KeyCodes lastKeyCode;
         enum KeyCodes
         {
             Up,
@@ -31,9 +33,8 @@ namespace SeaBattle
             Right,
             Enter,
             Default
-        }
-        static KeyCodes keyCodes;
-        static KeyCodes lastKeyCode;
+        } 
+
         public void Seafield()
         {
             Console.Clear();
