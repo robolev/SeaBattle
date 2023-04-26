@@ -14,6 +14,8 @@ namespace SeaBattle
         public bool[,]? currentHits;
         static bool player1Turn;
         static bool end = false;
+        bool[,] player1Hits = new bool[gridSize, gridSize];
+        bool[,] player2Hits = new bool[gridSize, gridSize];
         Map cell = new Map();
         
         enum KeyCodes
@@ -71,23 +73,11 @@ namespace SeaBattle
                     break;
             }
             lastKeyCode = keyCodes;
-        }     
+        }   
+ 
         public void PlayGame()
         {
-            end = false;
-            int gridSize = field.GetLength(0);
-            bool[,] player1Hits = new bool[gridSize, gridSize];
-            bool[,] player2Hits = new bool[gridSize, gridSize];
-            player1Turn = true;
-
-            Console.WriteLine("Player 1:");
-            player1 = new PlayerTypeSlection();
-           
-            Console.WriteLine("Player 2:");
-            player2 = new PlayerTypeSlection();
-           
-
-            Console.CursorVisible = false;
+            Init();
             while (!end)
             {
                 Console.Clear();
@@ -115,6 +105,23 @@ namespace SeaBattle
                 HandleBarrierChecking();
                 CheckingWin();
             }
+        }
+        public void Init()
+        {
+            end = false;
+            int gridSize = field.GetLength(0);
+            bool[,] player1Hits = new bool[gridSize, gridSize];
+            bool[,] player2Hits = new bool[gridSize, gridSize];
+            player1Turn = true;
+
+            Console.WriteLine("Player 1:");
+            player1 = new PlayerTypeSlection();
+
+            Console.WriteLine("Player 2:");
+            player2 = new PlayerTypeSlection();
+
+
+            Console.CursorVisible = false;
         }
         private void HandlePlayerTurn()
         {
@@ -211,8 +218,7 @@ namespace SeaBattle
                 player1Win = player1Turn ? true : false;
                 Console.WriteLine(player1Turn ? "Player 1 wins!" : "Player 2 wins!");
                 Console.ReadKey();
-                end = true;
-                
+                end = true;                
             }
             return player1Win;            
         }
