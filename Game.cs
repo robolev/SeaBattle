@@ -5,17 +5,22 @@ namespace SeaBattle
     public class Game
     {      
         static int gridSize = 10;
-        private CellState[,] field = new CellState[gridSize, gridSize];
-        private CellState[,] field2 = new CellState[gridSize, gridSize];
-        public PlayerTypeSlection? player1;
-        public PlayerTypeSlection? player2;
         static int cursorX = 0;
         static int cursorY = 0;
-        public bool[,]? currentHits;
+
+        private CellState[,] field = new CellState[gridSize, gridSize];
+        private CellState[,] field2 = new CellState[gridSize, gridSize];
+
+        public PlayerTypeSlection? player1;
+        public PlayerTypeSlection? player2;
+               
         static bool player1Turn;
         static bool end = false;
+
+        public bool[,]? currentHits;
         bool[,] player1Hits = new bool[gridSize, gridSize];
         bool[,] player2Hits = new bool[gridSize, gridSize];
+
         Map cell = new Map();
         
         enum KeyCodes
@@ -119,7 +124,6 @@ namespace SeaBattle
 
             Console.WriteLine("Player 2:");
             player2 = new PlayerTypeSlection();
-
 
             Console.CursorVisible = false;
         }
