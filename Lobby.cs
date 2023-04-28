@@ -7,6 +7,9 @@ namespace SeaBattle
 
         Game game = new Game();
 
+        CustodianOfInformation custodian = new CustodianOfInformation();
+        Profile profile= new Profile();
+
         int player1WinCount;
         int player2WinCount;
         public void ChooseIfcontinue()
@@ -42,10 +45,9 @@ namespace SeaBattle
         {
             bool winner = game.CheckingWin();
             (player1WinCount, player2WinCount) = PLayersWinStatistics(winner);
-            Console.WriteLine("Player 1 win statistic");
-            Console.WriteLine(player1WinCount + "   ");
-            Console.WriteLine("Player 2 win statistic");
-            Console.WriteLine(player2WinCount + "   ");
+           // profile.AssingPrewiousInformation();
+            custodian.SavingToTheFiles(winner,player1WinCount,player2WinCount);
+            custodian.LoadInformationFromFile();
         }
     }
 }
