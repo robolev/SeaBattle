@@ -16,8 +16,6 @@ namespace SeaBattle
 
         public Profile(int winCount1, int winCount2)
         {
-          //  WinCount1 += winCount1;
-          //  WinCount2 += winCount2;
             AssingPrewiousInformation(winCount1,winCount2);
         }
         public void AssingPrewiousInformation(int winCount1, int winCount2)
