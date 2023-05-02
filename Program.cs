@@ -6,9 +6,7 @@
         static async Task Main(string[] args)
         {
            CustodianOfInformation custodian = new CustodianOfInformation();
-           custodian.LoadInformationFromFile();
-     //      Profile profile= new Profile();
-   //        profile.AssingPrewiousInformation();
+            custodian.LoadInformationFromFile();  
            Menu menu = new Menu();
            menu.DrawMenu();
            Lobby loobby = new Lobby();

@@ -212,16 +212,19 @@ namespace SeaBattle
             }
             return true;
         }
-        public bool  CheckingWin()
+
+        public bool CheckingWin()
         {
-            bool player1Win = false;
+            var player1Win = false;
             if (AreAllWarshipsSunk())
             {
                 player1Win = player1Turn ? true : false;
                 Console.WriteLine(player1Turn ? "Player 1 wins!" : "Player 2 wins!");
-                end = true;                
+                end = true;
             }
-            return player1Win;            
+
+            return player1Win;
         }
+         
     }   
 }
